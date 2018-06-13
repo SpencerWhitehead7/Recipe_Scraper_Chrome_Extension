@@ -3,6 +3,10 @@
   "manifest_version": 2,
   "version": "0.1",
   "description": "A very basic Chrome practice extension",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "js": ["jquery.min.js", "logic.js"],
@@ -11,5 +15,6 @@
   ],
   "browser_action": {
     "default_icon": "Plate_Scraper.png"
-  }
+  },
+  "permissions": ["activeTab"]
 }
