@@ -28,11 +28,18 @@ const recipeToStr = recipe => {
   return output
 }
 
+let recipeStr
+
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
+    console.log(`CONTENTS ONMESSAGE HIT`)
     if(message.tab){
-      const recipeStr = scrape(message.tab.url)
+      console.log(`MESSAGE.TAB HIT`)
+      recipeStr = scrape(message.tab.url)
       sendResponse({recipeStr})
+    }else if(message.getRecipeStr){
+      console.log(`MESSAGE.GETRECIPESTR HIT`)
+      sendResponse(`recipeStr`)
     }
   }
 )
