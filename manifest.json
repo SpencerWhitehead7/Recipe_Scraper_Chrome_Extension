@@ -13,8 +13,9 @@
       "matches": ["<all_urls>"]
     }
   ],
-  "browser_action": {
-    "default_icon": "Plate_Scraper.png"
+  "page_action": {
+    "default_icon": "favicon.png",
+    "default_title": "Plate Scraper"
   },
-  "permissions": ["activeTab"]
+  "permissions": ["tabs", "activeTab"]
 }
