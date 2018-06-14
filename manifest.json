@@ -9,7 +9,7 @@
   },
   "content_scripts": [
     {
-      "js": ["jquery.min.js", "logic.js"],
+      "js": ["jquery.min.js", "content.js"],
       "matches": ["<all_urls>"]
     }
   ],
