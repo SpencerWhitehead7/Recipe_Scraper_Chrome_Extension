@@ -133,7 +133,7 @@ const allrecipes = recipe => {
   $(`.checkList__line label`).each(function(){ // label is to deal with inline-ads
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
-  recipe.ingredients = recipe.ingredients.slice(0, -3) // to deal with some HTML BS
+  recipe.ingredients = recipe.ingredients.slice(0, -1) // to deal with some HTML BS
   $(`.recipe-directions__list--item`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
   })
