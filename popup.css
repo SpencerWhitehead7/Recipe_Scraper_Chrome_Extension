@@ -1,11 +1,14 @@
 * {
-  margin: 0px;
-  padding: 0px
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 h1 {
   text-align: center;
-  line-height: 5vh
+  line-height: 5vh;
+  min-height: 33px;
 }
 
 #container {
@@ -19,7 +22,8 @@ h1 {
 
 h1 {
   flex: 0 1 auto;
-  height: 5vh
+  height: 5vh;
+  background: linear-gradient(rgb(128, 223, 255, 1), rgb(128, 223, 255, 0));
 }
 
 textarea {
@@ -32,12 +36,20 @@ textarea {
   justify-content: center;
   align-content: center;
   height: 3vh;
+  min-height: 20px;
 }
 
 #download label{
-  line-height: 3vh
+  line-height: 100%;
+}
+
+#download input{
+  border-radius: 10px 0px 0px 10px;
 }
 
 #download button {
-  width: 20%;
+  width: 120px;
+  color: black;
+  background: gold;
+  border-radius: 0px 10px 10px 0px;
 }
