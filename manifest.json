@@ -1,8 +1,8 @@
 {
   "name": "Plate Scraper",
   "manifest_version": 2,
-  "version": "0.2",
-  "description": "A very basic Chrome practice extension",
+  "version": "0.3",
+  "description": "Scrapes title, ingredients, and instructions from recipe sites as editable, minimally formatted, downloadable plaintext.",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
