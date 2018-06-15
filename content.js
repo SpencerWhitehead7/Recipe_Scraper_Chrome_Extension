@@ -1,49 +1,36 @@
-// Parsers
-// const allrecipes = require(`./allrecipes`)
-// const bettycrocker = require(`./bettycrocker`)
-// const bonappetit = require(`./bonappetit`)
-// const chowhound = require(`./chowhound`)
-// const cookinglight = require(`./cookinglight`)
-// const eatingwell = require(`./eatingwell`)
-// const epicurious = require(`./epicurious`)
-// const food52 = require(`./food52`)
-// const foodandwine = require(`./foodandwine`)
-// const foodnetwork = require(`./foodnetwork`)
-// const geniuskitchenOrfood = require(`./geniuskitchenOrfood`)
-// const jamieoliver = require(`./jamieoliver`)
-// const myrecipes = require(`./myrecipes`)
-// import seriousEats from './seriousEats'
-// const simplyrecipes = require(`./simplyrecipes`)
-// const thekitchn = require(`./thekitchn`)
+// Tragically, chrome extensions do not support modularization of content scripts
+// There are several ugly, brutal hacks for this, but ultimately they're even riskier
+// and more of a hassle than just doing it all in one file
+// Pray for modularization support to come someday
 
-let recipeStr
+let recipeData
 
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
     console.log(`CONTENTS LISTENER HIT`)
     if(message.tab){
       console.log(`MESSAGE.TAB HIT`)
-      recipeStr = scrape(message.tab.url)
-      console.log(recipeStr)
+      recipeData = scrape(message.tab.url)
+      console.log(recipeData)
     }
-    sendResponse(recipeStr)
+    sendResponse(recipeData)
   }
 )
 
 const recipeToStr = recipe => {
-  let output = `${recipe.title}\n\nIngredients\n`
+  let recipeStr = `${recipe.title}\n\nIngredients\n`
   recipe.ingredients.forEach(ingredient => {
-    output += `\n    ${ingredient}`
+    recipeStr += `\n    ${ingredient}`
   })
-  output += `\n\nInstructions\n`
+  recipeStr += `\n\nInstructions\n`
   recipe.instructions.forEach((instruction, i) => {
-    output += `\n    ${i + 1}) ${instruction}`
+    recipeStr += `\n    ${i + 1}) ${instruction}`
   })
-  return output
+  return recipeStr
 }
 
 /* eslint-disable complexity */ // Ignores "massively" complex parsers clause
-const scrape = (url) => {
+const scrape = url => {
   const recipe = {
     title : ``,
     ingredients : [],
@@ -54,6 +41,10 @@ const scrape = (url) => {
     source : ``,
     recipe : ``,
   }
+  const parserLoader = (parser, source) => {
+    parser(recipe)
+    recipeData.source = source
+  }
   // Deals with the edge case seriousEats pages
   if(
     url.includes(`seriouseats.com`) &&
@@ -62,53 +53,37 @@ const scrape = (url) => {
     return `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
     // Clauses to let you use different parsers for different websites
   }else if(url.includes(`allrecipes.com`)){ // allrecipes
-    allrecipes(recipe)
-    recipeData.source = `allrecipes.com`
-    // }else if(url.includes(`bettycrocker.com`)){
-    //   // bettycrocker
-    //   parserLoader(bettycrocker)
-    // }else if(url.includes(`bonappetit.com`)){
-    //   // bonappetit
-    //   parserLoader(bonappetit)
-    // }else if(url.includes(`chowhound.com`)){
-    //   // chowhound
-    //   parserLoader(chowhound)
-    // }else if(url.includes(`cookinglight.com`)){
-    //   // cookinglight
-    //   parserLoader(cookinglight)
-    // }else if(url.includes(`eatingwell.com`)){
-    //   // eatingwell
-    //   parserLoader(eatingwell)
-    // }else if(url.includes(`epicurious.com`)){
-    //   // epicurious
-    //   parserLoader(epicurious)
-    // }else if(url.includes(`food52.com`)){
-    //   // food52
-    //   parserLoader(food52)
-    // }else if(url.includes(`foodandwine.com`)){
-    //   // foodandwine
-    //   parserLoader(foodandwine)
-    // }else if(url.includes(`foodnetwork.com`)){
-    //   // foodnetwork
-    //   parserLoader(foodnetwork)
-    // }else if(url.includes(`geniuskitchen.com`)){
-    //   // geniuskitchen/food
-    //   parserLoader(geniuskitchenOrfood)
-    // }else if(url.includes(`jamieoliver.com`)){
-    //   // jamieoliver
-    //   parserLoader(jamieoliver)
-    // }else if(url.includes(`myrecipes.com`)){
-    //   // myrecipes
-    //   parserLoader(myrecipes)
+    parserLoader(allrecipes, `allrecipes.com`)
+  }else if(url.includes(`bettycrocker.com`)){ // bettycrocker
+    parserLoader(bettycrocker, `bettycrocker.com`)
+  }else if(url.includes(`bonappetit.com`)){ // bonappetit
+    parserLoader(bonappetit)
+  }else if(url.includes(`chowhound.com`)){ // chowhound
+    parserLoader(chowhound, `chowhound.com`)
+  }else if(url.includes(`cookinglight.com`)){ // cookinglight
+    parserLoader(cookinglight)
+  }else if(url.includes(`eatingwell.com`)){ // eatingwell
+    parserLoader(eatingwell)
+  }else if(url.includes(`epicurious.com`)){ // epicurious
+    parserLoader(epicurious)
+  }else if(url.includes(`food52.com`)){ // food52
+    parserLoader(food52)
+  }else if(url.includes(`foodandwine.com`)){ // foodandwine
+    parserLoader(foodandwine)
+  }else if(url.includes(`foodnetwork.com`)){ // foodnetwork
+    parserLoader(foodnetwork)
+  }else if(url.includes(`geniuskitchen.com`)){ // geniuskitchen/food
+    parserLoader(geniuskitchenOrfood)
+  }else if(url.includes(`jamieoliver.com`)){ // jamieoliver
+    parserLoader(jamieoliver)
+  }else if(url.includes(`myrecipes.com`)){ // myrecipes
+    parserLoader(myrecipes)
   }else if(url.includes(`seriouseats.com/recipes`)){ // seriouseats
-    seriouseats(recipe)
-    recipeData.source = `seriouseats.com`
-    // }else if(url.includes(`simplyrecipes.com`)){
-    //   // simplyrecipes
-    //   parserLoader(simplyrecipes)
-    // }else if(url.includes(`thekitchn.com`)){
-    //   // thekitchn
-    //   parserLoader(thekitchn)
+    parserLoader(seriouseats, `seriouseats.com`)
+  }else if(url.includes(`simplyrecipes.com`)){ // simplyrecipes
+    parserLoader(simplyrecipes)
+  }else if(url.includes(`thekitchn.com`)){ // thekitchn
+    parserLoader(thekitchn)
   }else{
     return `Sorry, we don't support that website`
   }
@@ -118,15 +93,7 @@ const scrape = (url) => {
 }
 /* eslint-enable complexity */
 
-const seriouseats = recipe => {
-  recipe.title = ($(`h1`).text())
-  $(`.ingredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
-  })
-  $(`.recipe-procedure-text`).each(function(){
-    recipe.instructions.push(`${$(this).text().trim()}`)
-  })
-}
+// Parsers
 
 const allrecipes = recipe => {
   recipe.title = ($(`h1`).text().trim())
@@ -138,4 +105,168 @@ const allrecipes = recipe => {
     recipe.instructions.push(`${$(this).text().trim()}`)
   })
   recipe.instructions = recipe.instructions.slice(0, -1) // to deal with some HTML BS
+}
+
+const bettycrocker = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.recipePartIngredient`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`
+      .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
+  })
+  $(`.recipePartStepDescription`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const boneappetit = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredients__text`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.step`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const chowhound = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.freyja_box.freyja_box81 ul li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.freyja_box.freyja_box82 ol li`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()
+      .slice(1)}`)
+  })
+}
+
+const cookinglight = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredients li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.step p`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const eatingwell = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.checkListListItem.checkListLine span`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  recipe.ingredients = recipe.ingredients.slice(0, -2) // to deal with some html BS
+  $(`.recipeDirectionsListItem`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+  recipe.instructions = recipe.instructions.slice(0, -1) // to deal with some html BS
+}
+
+const epicurious = recipe => {
+  recipe.title = ($(`h1`).text().trim())
+  $(`.ingredient`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.preparation-step`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const food52 = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.recipe-list li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`
+      .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
+  })
+  $(`.clearfix ol li`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const foodandwine = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredients li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.step p`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const foodnetwork = recipe => {
+  recipe.title = ($(`.o-AssetTitle__a-HeadlineText`).text().trim()
+    .slice(0, -16))
+  $(`.o-Ingredients__a-ListItem`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.o-Method__m-Body p`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+  if(recipe.instructions[recipe.instructions.length - 1].includes(`Photographs by`)){ // to deal with the many FN.com recipes where the final "instruction" is a PC
+    recipe.instructions = recipe.instructions.slice(0, -1) // this is an ugly and graceless fix, but they have ugly and graceless html and I'm doing the best I can
+  }
+}
+
+const geniuskitchenOrfood = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredient-list li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`ol li`).slice(0, -1).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const jamieoliver = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingred-list li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()
+      .replace(/\s\s+/g, ` `)}`) // to deal with some html whitespace BS
+  })
+  $(`.recipeSteps li`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const myrecipes = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredients li`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.step p`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`
+    )
+  })
+}
+
+const seriouseats = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredient`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.recipe-procedure-text`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
+const simplyrecipes = recipe => {
+  recipe.title = ($(`h1`).text())
+  $(`.ingredient`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.entry-details.recipe-method.instructions p`).each(function(){
+    if(`${$(this).text().trim()}` !== ``){
+      recipe.instructions.push(`${$(this).text().trim()}`
+        .replace(/^[\s\d]+/, ``)) // to deal with inline numbers
+    }
+  })
+}
+
+const thekitchn = recipe => {
+  recipe.title = ($(`h1`).text().trim())
+  $(`.PostRecipeIngredientGroup__ingredient`).each(function(){
+    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+  })
+  $(`.PostRecipeInstructionGroup__step`).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
 }
