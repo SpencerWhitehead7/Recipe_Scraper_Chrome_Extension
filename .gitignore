@@ -8,5 +8,8 @@ public/bundle.js.map
 # NPM errors
 npm-debug.log
 
+#"shipped" zip file
+Plate_Scraper
+
 # Personal notefile
 AAA.txt
