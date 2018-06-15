@@ -18,7 +18,7 @@
         "*://www.cookinglight.com/*",
         "*://www.eatingwell.com/*",
         "*://www.epicurious.com/*",
-        "*://www.food52.com/*",
+        "https://food52.com/*",
         "*://www.foodandwine.com/*",
         "*://www.foodnetwork.com/*",
         "*://www.geniuskitchen.com/*",
