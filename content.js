@@ -52,38 +52,39 @@ const scrape = url => {
   ){
     return `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
     // Clauses to let you use different parsers for different websites
+    // >>>>>>>>>>>>>>>>>>>> TESTED ALL ABOVE <<<<<<<<<<<<<<<<<<<< // movable line for testing day
   }else if(url.includes(`allrecipes.com`)){ // allrecipes
     parserLoader(allrecipes, `allrecipes.com`)
   }else if(url.includes(`bettycrocker.com`)){ // bettycrocker
     parserLoader(bettycrocker, `bettycrocker.com`)
   }else if(url.includes(`bonappetit.com`)){ // bonappetit
-    parserLoader(bonappetit)
+    parserLoader(bonappetit, `bonappetit.com`)
   }else if(url.includes(`chowhound.com`)){ // chowhound
     parserLoader(chowhound, `chowhound.com`)
   }else if(url.includes(`cookinglight.com`)){ // cookinglight
-    parserLoader(cookinglight)
+    parserLoader(cookinglight, `cookinglight.com`)
   }else if(url.includes(`eatingwell.com`)){ // eatingwell
-    parserLoader(eatingwell)
+    parserLoader(eatingwell, `eatingwell.com`)
   }else if(url.includes(`epicurious.com`)){ // epicurious
-    parserLoader(epicurious)
+    parserLoader(epicurious, `epicurious.com`)
   }else if(url.includes(`food52.com`)){ // food52
-    parserLoader(food52)
+    parserLoader(food52, `food52.com`)
   }else if(url.includes(`foodandwine.com`)){ // foodandwine
-    parserLoader(foodandwine)
+    parserLoader(foodandwine, `foodandwine.com`)
   }else if(url.includes(`foodnetwork.com`)){ // foodnetwork
-    parserLoader(foodnetwork)
+    parserLoader(foodnetwork, `foodnetwork.com`)
   }else if(url.includes(`geniuskitchen.com`)){ // geniuskitchen/food
-    parserLoader(geniuskitchenOrfood)
+    parserLoader(geniuskitchenOrfood, `geniuskitchen.com`)
   }else if(url.includes(`jamieoliver.com`)){ // jamieoliver
-    parserLoader(jamieoliver)
+    parserLoader(jamieoliver, `jamieoliver.com`)
   }else if(url.includes(`myrecipes.com`)){ // myrecipes
-    parserLoader(myrecipes)
+    parserLoader(myrecipes, `myrecipes.com`)
   }else if(url.includes(`seriouseats.com/recipes`)){ // seriouseats
     parserLoader(seriouseats, `seriouseats.com`)
   }else if(url.includes(`simplyrecipes.com`)){ // simplyrecipes
-    parserLoader(simplyrecipes)
+    parserLoader(simplyrecipes, `simplyrecipes.com`)
   }else if(url.includes(`thekitchn.com`)){ // thekitchn
-    parserLoader(thekitchn)
+    parserLoader(thekitchn, `thekitchn.com`)
   }else{
     return `Sorry, we don't support that website`
   }
@@ -110,7 +111,8 @@ const allrecipes = recipe => {
 const bettycrocker = recipe => {
   recipe.title = ($(`h1`).text())
   $(`.recipePartIngredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`
+    recipe.ingredients.push(`• ${$(this).text().trim()
+      .slice(0, -8)}` // to deal with inline ads
       .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
   })
   $(`.recipePartStepDescription`).each(function(){
@@ -118,7 +120,7 @@ const bettycrocker = recipe => {
   })
 }
 
-const boneappetit = recipe => {
+const bonappetit = recipe => {
   recipe.title = ($(`h1`).text())
   $(`.ingredients__text`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
@@ -135,7 +137,7 @@ const chowhound = recipe => {
   })
   $(`.freyja_box.freyja_box82 ol li`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()
-      .slice(1)}`)
+      .slice(18)}`)
   })
 }
 
@@ -151,10 +153,9 @@ const cookinglight = recipe => {
 
 const eatingwell = recipe => {
   recipe.title = ($(`h1`).text())
-  $(`.checkListListItem.checkListLine span`).each(function(){
+  $(`.checkListListItem.checkListLine > span`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
-  recipe.ingredients = recipe.ingredients.slice(0, -2) // to deal with some html BS
   $(`.recipeDirectionsListItem`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
   })
@@ -172,7 +173,7 @@ const epicurious = recipe => {
 }
 
 const food52 = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = ($(`h1`).text().trim())
   $(`.recipe-list li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`
       .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
@@ -187,8 +188,11 @@ const foodandwine = recipe => {
   $(`.ingredients li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
-  $(`.step p`).each(function(){
-    recipe.instructions.push(`${$(this).text().trim()}`)
+  $(`.step`).each(function(){
+    if($(this).attr(`itemprop`) === `recipeInstructions`){
+      recipe.instructions.push(`${$(this).children(`p`).text()
+        .trim()}`)
+    }
   })
 }
 
