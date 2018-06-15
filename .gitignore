@@ -9,7 +9,7 @@ public/bundle.js.map
 npm-debug.log
 
 #"shipped" zip file
-Plate_Scraper
+Plate_Scraper/*
 
 # Personal notefile
 AAA.txt
