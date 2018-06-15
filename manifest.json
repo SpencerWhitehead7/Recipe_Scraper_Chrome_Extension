@@ -1,7 +1,7 @@
 {
   "name": "Plate Scraper",
   "manifest_version": 2,
-  "version": "0.1",
+  "version": "0.2",
   "description": "A very basic Chrome practice extension",
   "background": {
     "scripts": ["background.js"],
