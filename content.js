@@ -47,10 +47,11 @@ const scrape = url => {
   }
   // Deals with the edge case seriousEats pages
   if(
-    url.includes(`seriouseats.com`) &&
-      !url.includes(`seriouseats.com/recipes`)
+    url.includes(`seriouseats.com`)
+    && !url.includes(`seriouseats.com/recipes`)
   ){
-    return `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
+    recipeData.recipe = `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
+    return recipeData
     // Clauses to let you use different parsers for different websites
     // >>>>>>>>>>>>>>>>>>>> TESTED ALL ABOVE <<<<<<<<<<<<<<<<<<<< // movable line for testing day
   }else if(url.includes(`allrecipes.com`)){ // allrecipes

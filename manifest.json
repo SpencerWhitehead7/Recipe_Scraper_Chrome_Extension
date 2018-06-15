@@ -10,7 +10,24 @@
   "content_scripts": [
     {
       "js": ["jquery.min.js", "content.js"],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "*://www.allrecipes.com/*",
+        "*://www.bettycrocker.com/*",
+        "*://www.bonappetit.com/*",
+        "*://www.chowhound.com/*",
+        "*://www.cookinglight.com/*",
+        "*://www.eatingwell.com/*",
+        "*://www.epicurious.com/*",
+        "*://www.food52.com/*",
+        "*://www.foodandwine.com/*",
+        "*://www.foodnetwork.com/*",
+        "*://www.geniuskitchen.com/*",
+        "*://www.jamieoliver.com/*",
+        "*://www.myrecipes.com/*",
+        "*://www.seriouseats.com/*",
+        "*://www.simplyrecipes.com/*",
+        "*://www.thekitchn.com/*"
+        ]
     }
   ],
   "page_action": {

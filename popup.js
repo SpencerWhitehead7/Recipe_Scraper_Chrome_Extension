@@ -1,7 +1,10 @@
 // Populate textbox
 const populate = recipeData => {
   console.log(`POPULATE HIT`, recipeData)
-  if(recipeData && recipeData.recipe.includes(`•`) && recipeData.recipe.includes(`1)`)){
+  if(recipeData && recipeData.recipe === `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`){
+    document.getElementsByTagName(`textarea`)[0].innerHTML = recipeData.recipe
+    document.getElementsByTagName(`button`)[0].disabled = true
+  }else if(recipeData && recipeData.recipe.includes(`•`) && recipeData.recipe.includes(`1)`)){
     document.getElementsByTagName(`textarea`)[0].innerHTML = recipeData.recipe
     document.getElementsByTagName(`input`)[0].value = `${recipeData.source.slice(0, -4)} ${recipeData.title}`
     document.getElementsByTagName(`button`)[0].addEventListener(`click`, download)
