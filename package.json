@@ -1,7 +1,7 @@
 {
-  "name": "extension_skeleton",
+  "name": "plate_scraper",
   "version": "1.0.0",
-  "description": "A very basic Chrome practice extension",
+  "description": "A chrome extension for scraping data from recipe sites",
   "main": "content.js",
   "dependencies": {},
   "devDependencies": {},
