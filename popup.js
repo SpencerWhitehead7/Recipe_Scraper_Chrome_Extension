@@ -4,13 +4,16 @@ const populate = recipeData => {
   if(recipeData && recipeData.recipe.includes(`•`) && recipeData.recipe.includes(`1)`)){
     document.getElementsByTagName(`textarea`)[0].innerHTML = recipeData.recipe
     document.getElementsByTagName(`input`)[0].value = `${recipeData.source.slice(0, -4)} ${recipeData.title}`
+    document.getElementsByTagName(`button`)[0].addEventListener(`click`, download)
   }else if(recipeData){
     document.getElementsByTagName(`textarea`)[0].innerHTML = `Error: failed to scrape: invalid url\n\nMake sure you're using the url of a specific recipe`
+    document.getElementsByTagName(`button`)[0].disabled = true
+  }else{
+    document.getElementsByTagName(`button`)[0].disabled = true
   }
 }
 
 window.addEventListener(`DOMContentLoaded`, () => {
-  document.getElementsByTagName(`button`)[0].addEventListener(`click`, download)
   chrome.runtime.getBackgroundPage(background => {
     console.log(background)
     populate(background.recipeData)
@@ -34,4 +37,5 @@ const download = () => {
   downloadLink.style.display = `none`
   document.body.appendChild(downloadLink)
   downloadLink.click()
+  alert(`Saved to your downloads folder`)
 }
