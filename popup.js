@@ -1,8 +1,9 @@
 // Populate textbox
-const populate = recipeStr => {
-  console.log(`POPULATE HIT`, recipeStr)
-  if(recipeStr){
-    document.getElementsByTagName(`textarea`)[0].innerHTML = recipeStr
+const populate = recipeData => {
+  console.log(`POPULATE HIT`, recipeData)
+  if(recipeData){
+    document.getElementsByTagName(`textarea`)[0].innerHTML = recipeData.recipe
+    document.getElementsByTagName(`input`)[0].value = `${recipeData.source.slice(0, -4)} ${recipeData.title}`
   }
 }
 
@@ -10,13 +11,15 @@ window.addEventListener(`DOMContentLoaded`, () => {
   document.getElementsByTagName(`button`)[0].addEventListener(`click`, download)
   chrome.runtime.getBackgroundPage(background => {
     console.log(background)
-    populate(background.recipeStr)
+    populate(background.recipeData)
   })
 })
 
+// Download text as .txt file
+
 const download = () => {
   const text = document.getElementsByTagName(`textarea`)[0].innerHTML
-  const textAsBlob = new Blob([text], {type : `text/plain`})
+  const textAsBlob = new Blob([text], {type : `application/msword`})
   const fileNameToSaveAs = document.getElementsByTagName(`input`)[0].value
 
   const downloadLink = document.createElement(`a`)

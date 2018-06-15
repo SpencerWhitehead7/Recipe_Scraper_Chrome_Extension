@@ -49,6 +49,11 @@ const scrape = (url) => {
     ingredients : [],
     instructions : [],
   }
+  const recipeData = {
+    title : ``,
+    source : ``,
+    recipe : ``,
+  }
   // Deals with the edge case seriousEats pages
   if(
     url.includes(`seriouseats.com`) &&
@@ -58,59 +63,62 @@ const scrape = (url) => {
     // Clauses to let you use different parsers for different websites
   }else if(url.includes(`allrecipes.com`)){ // allrecipes
     allrecipes(recipe)
-  // }else if(url.includes(`bettycrocker.com`)){
-  //   // bettycrocker
-  //   parserLoader(bettycrocker)
-  // }else if(url.includes(`bonappetit.com`)){
-  //   // bonappetit
-  //   parserLoader(bonappetit)
-  // }else if(url.includes(`chowhound.com`)){
-  //   // chowhound
-  //   parserLoader(chowhound)
-  // }else if(url.includes(`cookinglight.com`)){
-  //   // cookinglight
-  //   parserLoader(cookinglight)
-  // }else if(url.includes(`eatingwell.com`)){
-  //   // eatingwell
-  //   parserLoader(eatingwell)
-  // }else if(url.includes(`epicurious.com`)){
-  //   // epicurious
-  //   parserLoader(epicurious)
-  // }else if(url.includes(`food52.com`)){
-  //   // food52
-  //   parserLoader(food52)
-  // }else if(url.includes(`foodandwine.com`)){
-  //   // foodandwine
-  //   parserLoader(foodandwine)
-  // }else if(url.includes(`foodnetwork.com`)){
-  //   // foodnetwork
-  //   parserLoader(foodnetwork)
-  // }else if(url.includes(`geniuskitchen.com`)){
-  //   // geniuskitchen/food
-  //   parserLoader(geniuskitchenOrfood)
-  // }else if(url.includes(`jamieoliver.com`)){
-  //   // jamieoliver
-  //   parserLoader(jamieoliver)
-  // }else if(url.includes(`myrecipes.com`)){
-  //   // myrecipes
-  //   parserLoader(myrecipes)
+    recipeData.source = `allrecipes.com`
+    // }else if(url.includes(`bettycrocker.com`)){
+    //   // bettycrocker
+    //   parserLoader(bettycrocker)
+    // }else if(url.includes(`bonappetit.com`)){
+    //   // bonappetit
+    //   parserLoader(bonappetit)
+    // }else if(url.includes(`chowhound.com`)){
+    //   // chowhound
+    //   parserLoader(chowhound)
+    // }else if(url.includes(`cookinglight.com`)){
+    //   // cookinglight
+    //   parserLoader(cookinglight)
+    // }else if(url.includes(`eatingwell.com`)){
+    //   // eatingwell
+    //   parserLoader(eatingwell)
+    // }else if(url.includes(`epicurious.com`)){
+    //   // epicurious
+    //   parserLoader(epicurious)
+    // }else if(url.includes(`food52.com`)){
+    //   // food52
+    //   parserLoader(food52)
+    // }else if(url.includes(`foodandwine.com`)){
+    //   // foodandwine
+    //   parserLoader(foodandwine)
+    // }else if(url.includes(`foodnetwork.com`)){
+    //   // foodnetwork
+    //   parserLoader(foodnetwork)
+    // }else if(url.includes(`geniuskitchen.com`)){
+    //   // geniuskitchen/food
+    //   parserLoader(geniuskitchenOrfood)
+    // }else if(url.includes(`jamieoliver.com`)){
+    //   // jamieoliver
+    //   parserLoader(jamieoliver)
+    // }else if(url.includes(`myrecipes.com`)){
+    //   // myrecipes
+    //   parserLoader(myrecipes)
   }else if(url.includes(`seriouseats.com/recipes`)){ // seriouseats
-    seriousEats(recipe)
-  // }else if(url.includes(`simplyrecipes.com`)){
-  //   // simplyrecipes
-  //   parserLoader(simplyrecipes)
-  // }else if(url.includes(`thekitchn.com`)){
-  //   // thekitchn
-  //   parserLoader(thekitchn)
+    seriouseats(recipe)
+    recipeData.source = `seriouseats.com`
+    // }else if(url.includes(`simplyrecipes.com`)){
+    //   // simplyrecipes
+    //   parserLoader(simplyrecipes)
+    // }else if(url.includes(`thekitchn.com`)){
+    //   // thekitchn
+    //   parserLoader(thekitchn)
   }else{
     return `Sorry, we don't support that website`
   }
-  const recipeStr = `Source: ${url}\n\n${recipeToStr(recipe)}`
-  return recipeStr
+  recipeData.title = recipe.title
+  recipeData.recipe = `Source: ${url}\n\n${recipeToStr(recipe)}`
+  return recipeData
 }
 /* eslint-enable complexity */
 
-const seriousEats = recipe => {
+const seriouseats = recipe => {
   recipe.title = ($(`h1`).text())
   $(`.ingredient`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)

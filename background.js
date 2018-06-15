@@ -10,22 +10,18 @@ const show = (tabId, changeInfo, tab) => {
 
 chrome.tabs.onUpdated.addListener(show)
 
-// Send URL to scraping logic so it knows which parser to use, spawn popup on response
-
-/* eslint-disable no-var */
-window.recipeStr = ``
-/* eslint-enable no-var */
+// Send URL to scraping logic, spawn popup on response and make recipeData available to popup.js
 
 chrome.pageAction.onClicked.addListener(() => {
   chrome.tabs.query({active : true, currentWindow : true}, tabs => {
-    chrome.tabs.sendMessage(tabs[0].id, {tab : tabs[0]}, res => {
+    chrome.tabs.sendMessage(tabs[0].id, {tab : tabs[0]}, recipeData => {
       chrome.windows.create({
         url : `popup.html`,
         type : `popup`,
         height : 864,
       })
-      console.log(`RES TO BACKGROUND`, res)
-      window.recipeStr = res
+      console.log(`RES TO BACKGROUND`, recipeData)
+      window.recipeData = recipeData
     })
   })
 })
