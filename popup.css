@@ -7,8 +7,8 @@
 
 h1 {
   text-align: center;
-  line-height: 5vh;
-  min-height: 33px;
+  min-height: 40px;
+  line-height: 40px;
 }
 
 #container {
@@ -35,12 +35,11 @@ textarea {
   display: flex;
   justify-content: center;
   align-content: center;
-  height: 3vh;
-  min-height: 20px;
+  min-height: 25px;
 }
 
 #download label{
-  line-height: 100%;
+  line-height: 25px;
 }
 
 #download input{
