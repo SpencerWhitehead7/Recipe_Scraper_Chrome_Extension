@@ -3,24 +3,24 @@
 /* eslint-disable complexity */ // Ignores "massively" complex tabs clause
 const show = (tabId, changeInfo, tab) => {
   chrome.tabs.query({active : true, currentWindow : true}, tabs => {
-    if(tabs[0].url.includes(
-      `allrecipes.com` ||
-      `bettycrocker.com` ||
-      `boneappetit.com` ||
-      `chowhound.com` ||
-      `cookinglight.com` ||
-      `eatingwell.com` ||
-      `epicurious.com` ||
-      `food52.com` ||
-      `foodandwine.com` ||
-      `foodnetwork.com` ||
-      `geniuskitchen.com` ||
-      `jamieoliver.com` ||
-      `myrecipes.com` ||
-      `seriouseats.com` ||
-      `simplyrecipes.com` ||
-      `thekitchn.com`
-    )){
+    if(
+      tabs[0].url.includes(`allrecipes.com`) ||
+      tabs[0].url.includes(`bettycrocker.com`) ||
+      tabs[0].url.includes(`bonappetit.com`) ||
+      tabs[0].url.includes(`chowhound.com`) ||
+      tabs[0].url.includes(`cookinglight.com`) ||
+      tabs[0].url.includes(`eatingwell.com`) ||
+      tabs[0].url.includes(`epicurious.com`) ||
+      tabs[0].url.includes(`food52.com`) ||
+      tabs[0].url.includes(`foodandwine.com`) ||
+      tabs[0].url.includes(`foodnetwork.com`) ||
+      tabs[0].url.includes(`geniuskitchen.com`) ||
+      tabs[0].url.includes(`jamieoliver.com`) ||
+      tabs[0].url.includes(`myrecipes.com`) ||
+      tabs[0].url.includes(`seriouseats.com`) ||
+      tabs[0].url.includes(`simplyrecipes.com`) ||
+      tabs[0].url.includes(`thekitchn.com`)
+    ){
       chrome.pageAction.show(tabId)
     }
   })
