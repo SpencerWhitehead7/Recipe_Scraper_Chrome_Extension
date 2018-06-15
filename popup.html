@@ -7,14 +7,22 @@
   <meta charset="UTF-8">
   <title>Scraper!</title>
   <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+  <link rel="stylesheet" href="/popup.css"/>
   <script src="popup.js"></script>
 </head>
 
 <body>
-  <div>POPUP</div>
-  <textarea id="recipeStr">
-    FILLER CONTENT
-  </textarea>
+  <div id="container">
+    <h1>Plate Scraper</h1>
+    <textarea>
+      Looks like we failed to load. Try hitting the button again in a couple seconds when the page is done loading
+    </textarea>
+    <div id="download">
+      <label>Filename:</label>
+      <input />
+      <button>Download Recipe</button>
+    </div>
+  </div>
 </body>
 
 </html>

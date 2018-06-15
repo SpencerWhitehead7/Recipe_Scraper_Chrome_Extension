@@ -16,6 +16,20 @@
 // const simplyrecipes = require(`./simplyrecipes`)
 // const thekitchn = require(`./thekitchn`)
 
+let recipeStr
+
+chrome.runtime.onMessage.addListener(
+  (message, sender, sendResponse) => {
+    console.log(`CONTENTS LISTENER HIT`)
+    if(message.tab){
+      console.log(`MESSAGE.TAB HIT`)
+      recipeStr = scrape(message.tab.url)
+      console.log(recipeStr)
+    }
+    sendResponse(recipeStr)
+  }
+)
+
 const recipeToStr = recipe => {
   let output = `${recipe.title}\n\nIngredients\n`
   recipe.ingredients.forEach(ingredient => {
@@ -27,24 +41,6 @@ const recipeToStr = recipe => {
   })
   return output
 }
-
-let recipeStr
-
-chrome.runtime.onMessage.addListener(
-  (message, sender, sendResponse) => {
-    console.log(`CONTENTS ONMESSAGE HIT`)
-    if(message.tab){
-      console.log(`MESSAGE.TAB HIT`)
-      recipeStr = scrape(message.tab.url)
-      sendResponse({recipeStr})
-    }else if(message.getRecipeStr){
-      console.log(`MESSAGE.GETRECIPESTR HIT`)
-      sendResponse(`recipeStr`)
-    }
-  }
-)
-
-$(`body`).append(`What'll happen`)
 
 /* eslint-disable complexity */ // Ignores "massively" complex parsers clause
 const scrape = (url) => {
