@@ -28,7 +28,7 @@ window.addEventListener(`DOMContentLoaded`, () => {
 const download = () => {
   // Getting text into a downloadable format
   const text = document.getElementsByTagName(`textarea`)[0].innerHTML
-  const textAsBlob = new Blob([text], {type : `text/plain`})
+  const textAsBlob = new Blob([text], { type : `text/plain` })
   const fileNameToSaveAs = document.getElementsByTagName(`input`)[0].value
 
   // Triggering download

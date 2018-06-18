@@ -6,6 +6,7 @@
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
     console.log(`CONTENTS LISTENER HIT`)
+    let recipeData
     if(message.tab){
       console.log(`MESSAGE.TAB HIT`)
       recipeData = scrape(message.tab.url)
@@ -27,7 +28,7 @@ const recipeToStr = recipe => {
   return recipeStr
 }
 
-/* eslint-disable complexity */ // Ignores "massively" complex parsers clause
+/* eslint-disable complexity, no-use-before-define */ // Ignores "massively" complex parsers clause
 const scrape = url => {
   const recipe = {
     title : ``,
@@ -91,7 +92,7 @@ const scrape = url => {
   recipeData.recipe = `Source: ${url}\n\n${recipeToStr(recipe)}`
   return recipeData
 }
-/* eslint-enable complexity */
+/* eslint-enable complexity, no-use-before-define */
 
 // Parsers
 
