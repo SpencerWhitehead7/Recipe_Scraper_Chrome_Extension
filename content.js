@@ -3,8 +3,6 @@
 // and more of a hassle than just doing it all in one file
 // Pray for modularization support to come someday
 
-let recipeData
-
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
     console.log(`CONTENTS LISTENER HIT`)
@@ -37,13 +35,14 @@ const scrape = url => {
     instructions : [],
   }
   const recipeData = {
+    sourceSite : ``,
+    sourceURL : url,
     title : ``,
-    source : ``,
     recipe : ``,
   }
   const parserLoader = (parser, source) => {
     parser(recipe)
-    recipeData.source = source
+    recipeData.sourceSite = source
   }
   // Deals with the edge case seriousEats pages
   if(
@@ -53,7 +52,6 @@ const scrape = url => {
     recipeData.recipe = `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
     return recipeData
     // Clauses to let you use different parsers for different websites
-    // >>>>>>>>>>>>>>>>>>>> TESTED ALL ABOVE <<<<<<<<<<<<<<<<<<<< // movable line for testing day
   }else if(url.includes(`allrecipes.com`)){ // allrecipes
     parserLoader(allrecipes, `allrecipes.com`)
   }else if(url.includes(`bettycrocker.com`)){ // bettycrocker
