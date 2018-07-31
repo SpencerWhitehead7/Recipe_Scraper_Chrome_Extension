@@ -5,12 +5,9 @@
 
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
-    console.log(`CONTENTS LISTENER HIT`)
     let recipeData
     if(message.tab){
-      console.log(`MESSAGE.TAB HIT`)
       recipeData = scrape(message.tab.url)
-      console.log(recipeData)
     }
     sendResponse(recipeData)
   }

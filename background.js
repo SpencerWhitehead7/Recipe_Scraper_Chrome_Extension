@@ -2,7 +2,7 @@
 
 /* eslint-disable complexity */ // Ignores "massively" complex tabs clause
 const show = (tabId, changeInfo, tab) => {
-  chrome.tabs.query({ active : true, currentWindow : true }, tabs => {
+  chrome.tabs.query({active : true, currentWindow : true}, tabs => {
     if(
       tabs[0].url.includes(`allrecipes.com`) ||
       tabs[0].url.includes(`bettycrocker.com`) ||
@@ -32,14 +32,13 @@ chrome.tabs.onUpdated.addListener(show)
 // Send URL to scraping logic, spawn popup on response and make recipeData available to popup.js
 
 chrome.pageAction.onClicked.addListener(() => {
-  chrome.tabs.query({ active : true, currentWindow : true }, tabs => {
-    chrome.tabs.sendMessage(tabs[0].id, { tab : tabs[0] }, recipeData => {
+  chrome.tabs.query({active : true, currentWindow : true}, tabs => {
+    chrome.tabs.sendMessage(tabs[0].id, {tab : tabs[0]}, recipeData => {
       chrome.windows.create({
         url : `popup.html`,
         type : `popup`,
         height : 864,
       })
-      console.log(`RES TO BACKGROUND`, recipeData)
       window.recipeData = recipeData
     })
   })
