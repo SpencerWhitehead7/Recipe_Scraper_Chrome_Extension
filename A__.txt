@@ -1,0 +1,14 @@
+Port it to FF
+  Remember to check the download function. You should really check everything though.
+
+Add support for budgetbites
+Fix eatingwell, check out wrong download name issue
+
+PROCEDURE FOR ADDING A NEW SUPPORTED SITE:
+1) WRITE PARSER IN CONTENT.JS, IN ALPAHBETICAL PLACE
+2) ADD TO MEGACLAUSE OF DOOM IN CONTENT.JS
+3) ADD TO ENABLED LIST IN BACKGROUND.JS
+4) ADD TEST
+5) MANUALLY TEST FOR INTEGRATION (or l2 integration test)
+6) ???
+7) PROFIT
