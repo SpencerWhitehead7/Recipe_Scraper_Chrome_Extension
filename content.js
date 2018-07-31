@@ -154,7 +154,7 @@ const cookinglight = recipe => {
 }
 
 const eatingwell = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = ($(`.hideOnTabletToDesktop`).text())
   $(`.checkListListItem.checkListLine > span`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
