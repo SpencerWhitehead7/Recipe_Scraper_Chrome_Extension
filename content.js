@@ -133,8 +133,13 @@ const chowhound = recipe => {
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
   $(`.freyja_box.freyja_box82 ol li`).each(function(){
-    recipe.instructions.push(`${$(this).text().trim()
-      .slice(18)}`)
+    let instruction = `${$(this).text().trim()}`
+    let count = 0
+    while(/[0-9]/.test(instruction[count])){
+      count++
+    }
+    instruction = instruction.slice(count).trim()
+    recipe.instructions.push(instruction) // to deal with some html BS
   })
 }
 
