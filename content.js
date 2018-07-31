@@ -199,16 +199,26 @@ const foodandwine = recipe => {
 }
 
 const foodnetwork = recipe => {
-  recipe.title = ($(`.o-AssetTitle__a-HeadlineText`).text().trim()
-    .slice(0, -16))
-  $(`.o-Ingredients__a-ListItem`).each(function(){
+  recipe.title = ($(`.o-AssetTitle__a-HeadlineText`).text().trim())
+  if(recipe.title.slice(-16)===`My Private Notes`){
+    recipe.title = recipe.title.slice(0, -16)
+  }
+  $(`.o-Ingredients__m-Body ul li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
+  if(recipe.ingredients.length === 0){ // /sigh other html layout
+    $(`.o-Ingredients__m-Body p`).each(function(){
+      recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    })
+  }
   $(`.o-Method__m-Body p`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
   })
-  if(recipe.instructions[recipe.instructions.length - 1].includes(`Photographs by`)){ // to deal with the many FN.com recipes where the final "instruction" is a PC
-    recipe.instructions = recipe.instructions.slice(0, -1) // this is an ugly and graceless fix, but they have ugly and graceless html and I'm doing the best I can
+  if(recipe.instructions[recipe.instructions.length - 1].includes(`Photograph`)){ // to deal with the many FN.com recipes where the final "instruction" is a PC
+    recipe.instructions.pop() // this is an ugly and graceless fix, but they have ugly and graceless html and I'm doing the best I can
+  }
+  if(recipe.instructions[0] === `Watch how to make this recipe.`){
+    recipe.instructions.shift()
   }
 }
 
