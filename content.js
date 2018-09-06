@@ -3,9 +3,11 @@
 // and more of a hassle than just doing it all in one file
 // Pray for modularization support to come someday
 
+/* global chrome:false */
+
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
-    let recipeData
+    let recipeData = {}
     if(message.tab){
       recipeData = scrape(message.tab.url)
     }
@@ -44,8 +46,8 @@ const scrape = url => {
   }
   // Deals with the edge case seriousEats pages
   if(
-    url.includes(`seriouseats.com`)
-    && !url.includes(`seriouseats.com/recipes`)
+    url.includes(`seriouseats.com`) &&
+    !url.includes(`seriouseats.com/recipes`)
   ){
     recipeData.recipe = `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
     return recipeData
@@ -94,7 +96,7 @@ const scrape = url => {
 // Parsers
 
 const allrecipes = recipe => {
-  recipe.title = ($(`h1`).text().trim())
+  recipe.title = $(`h1`).text().trim()
   $(`.checkList__line label`).each(function(){ // label is to deal with inline-ads
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -106,7 +108,7 @@ const allrecipes = recipe => {
 }
 
 const bettycrocker = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.recipePartIngredient`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()
       .slice(0, -8)}` // to deal with inline ads
@@ -118,7 +120,7 @@ const bettycrocker = recipe => {
 }
 
 const bonappetit = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredients__text`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -128,14 +130,14 @@ const bonappetit = recipe => {
 }
 
 const chowhound = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.freyja_box.freyja_box81 ul li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
   $(`.freyja_box.freyja_box82 ol li`).each(function(){
     let instruction = `${$(this).text().trim()}`
     let count = 0
-    while(/[0-9]/.test(instruction[count])){
+    while((/[0-9]/).test(instruction[count])){
       count++
     }
     instruction = instruction.slice(count).trim()
@@ -144,7 +146,7 @@ const chowhound = recipe => {
 }
 
 const cookinglight = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredients li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -154,7 +156,7 @@ const cookinglight = recipe => {
 }
 
 const eatingwell = recipe => {
-  recipe.title = ($(`.hideOnTabletToDesktop`).text())
+  recipe.title = $(`.hideOnTabletToDesktop`).text()
   $(`.checkListListItem.checkListLine > span`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -165,7 +167,7 @@ const eatingwell = recipe => {
 }
 
 const epicurious = recipe => {
-  recipe.title = ($(`h1`).text().trim())
+  recipe.title = $(`h1`).text().trim()
   $(`.ingredient`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -175,7 +177,7 @@ const epicurious = recipe => {
 }
 
 const food52 = recipe => {
-  recipe.title = ($(`h1`).text().trim())
+  recipe.title = $(`h1`).text().trim()
   $(`.recipe-list li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`
       .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
@@ -186,7 +188,7 @@ const food52 = recipe => {
 }
 
 const foodandwine = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredients li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -199,8 +201,8 @@ const foodandwine = recipe => {
 }
 
 const foodnetwork = recipe => {
-  recipe.title = ($(`.o-AssetTitle__a-HeadlineText`).text().trim())
-  if(recipe.title.slice(-16)===`My Private Notes`){
+  recipe.title = $(`.o-AssetTitle__a-HeadlineText`).text().trim()
+  if(recipe.title.slice(-16) === `My Private Notes`){
     recipe.title = recipe.title.slice(0, -16)
   }
   $(`.o-Ingredients__m-Body ul li`).each(function(){
@@ -223,7 +225,7 @@ const foodnetwork = recipe => {
 }
 
 const geniuskitchenOrfood = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredient-list li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -233,7 +235,7 @@ const geniuskitchenOrfood = recipe => {
 }
 
 const jamieoliver = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingred-list li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()
       .replace(/\s\s+/g, ` `)}`) // to deal with some html whitespace BS
@@ -244,18 +246,17 @@ const jamieoliver = recipe => {
 }
 
 const myrecipes = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredients li`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
   $(`.step p`).each(function(){
-    recipe.instructions.push(`${$(this).text().trim()}`
-    )
+    recipe.instructions.push(`${$(this).text().trim()}`)
   })
 }
 
 const seriouseats = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredient`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -265,7 +266,7 @@ const seriouseats = recipe => {
 }
 
 const simplyrecipes = recipe => {
-  recipe.title = ($(`h1`).text())
+  recipe.title = $(`h1`).text()
   $(`.ingredient`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })
@@ -278,7 +279,7 @@ const simplyrecipes = recipe => {
 }
 
 const thekitchn = recipe => {
-  recipe.title = ($(`h1`).text().trim())
+  recipe.title = $(`h1`).text().trim()
   $(`.PostRecipeIngredientGroup__ingredient`).each(function(){
     recipe.ingredients.push(`• ${$(this).text().trim()}`)
   })

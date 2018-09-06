@@ -1,3 +1,5 @@
+/* global chrome:false */
+
 // Populate textbox
 const populate = recipeData => {
   if(recipeData && recipeData.recipe === `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`){

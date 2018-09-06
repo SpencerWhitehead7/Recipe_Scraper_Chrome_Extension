@@ -1,3 +1,5 @@
+/* global chrome:false */
+
 // Show/grey out button depending on whether site is supported
 
 /* eslint-disable complexity */ // Ignores "massively" complex tabs clause
