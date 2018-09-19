@@ -40,5 +40,5 @@ const download = () => {
   downloadLink.style.display = `none`
   document.body.appendChild(downloadLink)
   downloadLink.click()
-  alert(`Saved to your downloads folder`)
+  alert(`Saved to your default download location`)
 }
