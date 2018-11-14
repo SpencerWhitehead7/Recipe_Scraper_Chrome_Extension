@@ -40,6 +40,7 @@ chrome.pageAction.onClicked.addListener(() => {
         url : `popup.html`,
         type : `popup`,
         height : 864,
+        width : 1400,
       })
       window.recipeData = recipeData
     })
