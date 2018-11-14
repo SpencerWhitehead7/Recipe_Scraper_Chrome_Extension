@@ -279,11 +279,11 @@ const simplyrecipes = recipe => {
 }
 
 const thekitchn = recipe => {
-  recipe.title = $(`h1`).text().trim()
-  $(`.PostRecipeIngredientGroup__ingredient`).each(function(){
+  recipe.title = $(`.Recipe__title`).text().trim()
+  $(`.Recipe__ingredient`).each(function(){
     recipe.ingredients.push(`${$(this).text().trim()}`)
   })
-  $(`.PostRecipeInstructionGroup__step`).each(function(){
+  $(`.Recipe__instruction-step`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
   })
 }
