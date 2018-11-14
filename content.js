@@ -15,16 +15,12 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
-const recipeToStr = recipe => {
-  let recipeStr = `${recipe.title}\n\nIngredients\n`
-  recipe.ingredients.forEach(ingredient => {
-    recipeStr += `\n    ${ingredient}`
-  })
-  recipeStr += `\n\nInstructions\n`
-  recipe.instructions.forEach((instruction, i) => {
-    recipeStr += `\n    ${i + 1}) ${instruction}`
-  })
-  return recipeStr
+const recipeToStr = (url, recipe) => {
+  let output = `Source: ${url}\n\n${recipe.title}\n\nIngredients\n`
+  recipe.ingredients.forEach(ingredient => {output += `\n${ingredient}`})
+  output += `\n\nInstructions\n`
+  recipe.instructions.forEach(instruction => {output += `\n${instruction}\n`})
+  return output
 }
 
 /* eslint-disable complexity, no-use-before-define */ // Ignores "massively" complex parsers clause
@@ -88,7 +84,7 @@ const scrape = url => {
     return `Sorry, we don't support that website`
   }
   recipeData.title = recipe.title
-  recipeData.recipe = `Source: ${url}\n\n${recipeToStr(recipe)}`
+  recipeData.recipe = recipeToStr(url, recipe)
   return recipeData
 }
 /* eslint-enable complexity, no-use-before-define */
@@ -98,7 +94,7 @@ const scrape = url => {
 const allrecipes = recipe => {
   recipe.title = $(`h1`).text().trim()
   $(`.checkList__line label`).each(function(){ // label is to deal with inline-ads
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   recipe.ingredients = recipe.ingredients.slice(0, -1) // to deal with some HTML BS
   $(`.recipe-directions__list--item`).each(function(){
@@ -110,7 +106,7 @@ const allrecipes = recipe => {
 const bettycrocker = recipe => {
   recipe.title = $(`h1`).text()
   $(`.recipePartIngredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()
+    recipe.ingredients.push(`${$(this).text().trim()
       .slice(0, -8)}` // to deal with inline ads
       .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
   })
@@ -122,7 +118,7 @@ const bettycrocker = recipe => {
 const bonappetit = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredients__text`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.step`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -132,7 +128,7 @@ const bonappetit = recipe => {
 const chowhound = recipe => {
   recipe.title = $(`h1`).text()
   $(`.freyja_box.freyja_box81 ul li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.freyja_box.freyja_box82 ol li`).each(function(){
     let instruction = `${$(this).text().trim()}`
@@ -148,7 +144,7 @@ const chowhound = recipe => {
 const cookinglight = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredients li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.step p`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -158,7 +154,7 @@ const cookinglight = recipe => {
 const eatingwell = recipe => {
   recipe.title = $(`.hideOnTabletToDesktop`).text()
   $(`.checkListListItem.checkListLine > span`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.recipeDirectionsListItem`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -169,7 +165,7 @@ const eatingwell = recipe => {
 const epicurious = recipe => {
   recipe.title = $(`h1`).text().trim()
   $(`.ingredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.preparation-step`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -179,7 +175,7 @@ const epicurious = recipe => {
 const food52 = recipe => {
   recipe.title = $(`h1`).text().trim()
   $(`.recipe-list li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`
+    recipe.ingredients.push(`${$(this).text().trim()}`
       .replace(/\s\s+/g, ` `)) // to deal with some html whitespace BS
   })
   $(`.clearfix ol li`).each(function(){
@@ -190,7 +186,7 @@ const food52 = recipe => {
 const foodandwine = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredients li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.step`).each(function(){
     if($(this).attr(`itemprop`) === `recipeInstructions`){
@@ -204,11 +200,11 @@ const foodnetwork = recipe => {
   recipe.title = $(`.o-AssetTitle__a-HeadlineText`)[0].innerText // this works differently on the site, don't know why
 
   $(`.o-Ingredients__m-Body ul li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   if(recipe.ingredients.length === 0){ // /sigh other html layout
     $(`.o-Ingredients__m-Body p`).each(function(){
-      recipe.ingredients.push(`• ${$(this).text().trim()}`)
+      recipe.ingredients.push(`${$(this).text().trim()}`)
     })
   }
 
@@ -231,7 +227,7 @@ const foodnetwork = recipe => {
 const geniuskitchenOrfood = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredient-list li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`ol li`).slice(0, -1).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -241,7 +237,7 @@ const geniuskitchenOrfood = recipe => {
 const jamieoliver = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingred-list li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()
+    recipe.ingredients.push(`${$(this).text().trim()
       .replace(/\s\s+/g, ` `)}`) // to deal with some html whitespace BS
   })
   $(`.recipeSteps li`).each(function(){
@@ -252,7 +248,7 @@ const jamieoliver = recipe => {
 const myrecipes = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredients li`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.step p`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -262,7 +258,7 @@ const myrecipes = recipe => {
 const seriouseats = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.recipe-procedure-text`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
@@ -272,7 +268,7 @@ const seriouseats = recipe => {
 const simplyrecipes = recipe => {
   recipe.title = $(`h1`).text()
   $(`.ingredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.entry-details.recipe-method.instructions p`).each(function(){
     if(`${$(this).text().trim()}` !== ``){
@@ -285,7 +281,7 @@ const simplyrecipes = recipe => {
 const thekitchn = recipe => {
   recipe.title = $(`h1`).text().trim()
   $(`.PostRecipeIngredientGroup__ingredient`).each(function(){
-    recipe.ingredients.push(`• ${$(this).text().trim()}`)
+    recipe.ingredients.push(`${$(this).text().trim()}`)
   })
   $(`.PostRecipeInstructionGroup__step`).each(function(){
     recipe.instructions.push(`${$(this).text().trim()}`)
