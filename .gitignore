@@ -1,9 +1,11 @@
 # NPM errors
 npm-debug.log
 
-#"shipped" zip file
-Plate_Scraper.zip
-gimp_icons_and_images/*
-
 # Personal notefile
 A__.txt
+
+# Files for chrome app store
+gimp_icons_and_images/*
+
+# "shipped" zip file
+plate-scraper.zip
