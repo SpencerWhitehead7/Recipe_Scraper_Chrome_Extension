@@ -56,14 +56,14 @@ const scrape = url => {
     parserLoader(eatingwell, `eatingwell.com`)
   }else if(url.includes(`epicurious.com`)){ // epicurious
     parserLoader(epicurious, `epicurious.com`)
+  }else if(url.includes(`food.com`)){ // food
+    parserLoader(food, `food.com`)
   }else if(url.includes(`food52.com`)){ // food52
     parserLoader(food52, `food52.com`)
   }else if(url.includes(`foodandwine.com`)){ // foodandwine
     parserLoader(foodandwine, `foodandwine.com`)
   }else if(url.includes(`foodnetwork.com`)){ // foodnetwork
     parserLoader(foodnetwork, `foodnetwork.com`)
-  }else if(url.includes(`geniuskitchen.com`)){ // geniuskitchen/food
-    parserLoader(geniuskitchenOrfood, `geniuskitchen.com`)
   }else if(url.includes(`jamieoliver.com`)){ // jamieoliver
     parserLoader(jamieoliver, `jamieoliver.com`)
   }else if(url.includes(`myrecipes.com`)){ // myrecipes
@@ -165,6 +165,16 @@ const epicurious = recipe => {
   })
 }
 
+const food = recipe => {
+  recipe.title = $(`h1`).text()
+  $(`.ingredient-list li`).each(function(){
+    recipe.ingredients.push(`${$(this).text().trim()}`)
+  })
+  $(`ol li`).slice(0, -1).each(function(){
+    recipe.instructions.push(`${$(this).text().trim()}`)
+  })
+}
+
 const food52 = recipe => {
   recipe.title = $(`h1`).text().trim()
   $(`.recipe-list li`).each(function(){
@@ -215,16 +225,6 @@ const foodnetwork = recipe => {
   if(recipe.instructions[recipe.instructions.length - 1].includes(`Photograph`)){ // to deal with the many FN.com recipes where the final "instruction" is a PC
     recipe.instructions.pop() // this is an ugly and graceless fix, but they have ugly and graceless html and I'm doing the best I can
   }
-}
-
-const geniuskitchenOrfood = recipe => {
-  recipe.title = $(`h1`).text()
-  $(`.ingredient-list li`).each(function(){
-    recipe.ingredients.push(`${$(this).text().trim()}`)
-  })
-  $(`ol li`).slice(0, -1).each(function(){
-    recipe.instructions.push(`${$(this).text().trim()}`)
-  })
 }
 
 const jamieoliver = recipe => {

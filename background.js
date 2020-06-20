@@ -11,10 +11,10 @@ const show = (tabId, changeInfo, tab) => {
       tabs[0].url.includes(`cookinglight.com`) ||
       tabs[0].url.includes(`eatingwell.com`) ||
       tabs[0].url.includes(`epicurious.com`) ||
+      tabs[0].url.includes(`food.com`) ||
       tabs[0].url.includes(`food52.com`) ||
       tabs[0].url.includes(`foodandwine.com`) ||
       tabs[0].url.includes(`foodnetwork.com`) ||
-      tabs[0].url.includes(`geniuskitchen.com`) ||
       tabs[0].url.includes(`jamieoliver.com`) ||
       tabs[0].url.includes(`myrecipes.com`) ||
       tabs[0].url.includes(`seriouseats.com`) ||
