@@ -8,9 +8,7 @@
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponse) => {
     let recipeData = {}
-    if(message.tab){
-      recipeData = scrape(message.tab.url)
-    }
+    if (message.tab) { recipeData = scrape(message.tab.url) }
     sendResponse(recipeData)
   }
 )
@@ -23,7 +21,6 @@ const recipeToStr = (url, recipe) => {
   return output
 }
 
-/* eslint-disable complexity, no-use-before-define */ // Ignores "massively" complex parsers clause
 const scrape = url => {
   const recipe = {
     title : ``,
@@ -41,10 +38,7 @@ const scrape = url => {
     recipeData.sourceSite = source
   }
   // Deals with the edge case seriousEats pages
-  if(
-    url.includes(`seriouseats.com`) &&
-    !url.includes(`seriouseats.com/recipes`)
-  ){
+  if ( url.includes(`seriouseats.com`) && !url.includes(`seriouseats.com/recipes`)) {
     recipeData.recipe = `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`
     return recipeData
     // Clauses to let you use different parsers for different websites
@@ -87,7 +81,6 @@ const scrape = url => {
   recipeData.recipe = recipeToStr(url, recipe)
   return recipeData
 }
-/* eslint-enable complexity, no-use-before-define */
 
 // Parsers
 

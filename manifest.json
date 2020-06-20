@@ -4,8 +4,8 @@
   "manifest_version": 2,
   "version": "0.9",
   "description": "Scrapes title, ingredients, and instructions from recipe sites as editable, minimally formatted, downloadable plaintext.",
-  "icons":{
-    "128":"icon128.png",
+  "icons": {
+    "128": "icon128.png",
     "48": "icon48.png",
     "16": "icon16.png"
   },
@@ -24,7 +24,7 @@
         "*://www.cookinglight.com/*",
         "*://www.eatingwell.com/*",
         "*://www.epicurious.com/*",
-        "https://food52.com/*",
+        "*://food52.com/*",
         "*://www.foodandwine.com/*",
         "*://www.foodnetwork.com/*",
         "*://www.geniuskitchen.com/*",
@@ -33,7 +33,7 @@
         "*://www.seriouseats.com/*",
         "*://www.simplyrecipes.com/*",
         "*://www.thekitchn.com/*"
-        ]
+      ]
     }
   ],
   "page_action": {

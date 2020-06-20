@@ -2,14 +2,10 @@
   "name": "plate_scraper",
   "version": "1.0.0",
   "description": "A chrome extension for scraping data from recipe sites",
+  "author": "spencer",
+  "license": "Unlicense",
   "main": "content.js",
+  "scripts": {},
   "dependencies": {},
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext .js,.jsx --ignore-pattern /public/*",
-    "lint-fix": "eslint . --ext .js,.jsx --fix --ignore-pattern /public/*"
-  },
-  "author": "spencer whitehead",
-  "license": "Unlicense"
+  "devDependencies": {}
 }
