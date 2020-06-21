@@ -6,7 +6,7 @@
 /* global chrome:false */
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  let recipeData = {}
+  let recipeData = { error: `No message.tab.url` }
   if (message.tab.url) { recipeData = scrape(message.tab.url) }
   sendResponse(recipeData)
 })
@@ -46,7 +46,7 @@ const getRecipe = (url, title, ingredients, instructions) => [
 const scrape = url => {
   // Deals with edge case seriousEats pages
   if (url.includes(`seriouseats.com`) && !url.includes(`seriouseats.com/recipes`)) {
-    return { recipe: `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com` }
+    return { error: `Make sure your url is seriouseats.com/recipes, not just seriouseats.com` }
   } else if (url.includes(`allrecipes.com`)) {
     return allrecipes(url)
   } else if (url.includes(`bettycrocker.com`)) {
@@ -80,7 +80,7 @@ const scrape = url => {
   } else if (url.includes(`thekitchn.com`)) {
     return thekitchn(url)
   } else {
-    return {}
+    return { error: `No domain matched` }
   }
 }
 

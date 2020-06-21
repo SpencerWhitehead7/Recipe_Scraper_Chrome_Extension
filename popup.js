@@ -8,7 +8,7 @@ window.addEventListener(`DOMContentLoaded`, () => {
   // Download text as .txt file
   const download = () => {
     // Getting text into a downloadable format
-    const text = textarea.innerHTML
+    const text = textarea.value
     const textBlob = new Blob([text], { type: `text/plain` })
     const fileName = input.value
 
@@ -23,22 +23,22 @@ window.addEventListener(`DOMContentLoaded`, () => {
     alert(`Saved to your default download location`)
   }
 
-  // Populate textbox
-  const populate = recipeData => {
-    if (recipeData && recipeData.text === `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`) {
-      textarea.innerHTML = recipeData.text
+  // Populate textarea
+  chrome.runtime.getBackgroundPage(background => {
+    const { recipeData } = background
+    if (!recipeData) {
+      textarea.value = `No recipeData`
+      button.disabled = true
+    } else if (recipeData.error) {
+      textarea.value = recipeData.error
       button.disabled = true
     } else if (recipeData && (!recipeData.title || !recipeData.text)) {
-      textarea.innerHTML = `Error: failed to scrape\n\nMake sure you're on a specific recipe's page`
+      textarea.value = `Failed to scrape: make sure you're on a specific recipe's page`
       button.disabled = true
-    } else if (recipeData) {
-      textarea.innerHTML = recipeData.text
+    } else {
+      textarea.value = recipeData.text
       input.value = `${recipeData.sourceSite.slice(0, -4)} ${recipeData.title}`
       button.addEventListener(`click`, download)
-    } else {
-      button.disabled = true
     }
-  }
-
-  chrome.runtime.getBackgroundPage(background => { populate(background.recipeData) })
+  })
 })
