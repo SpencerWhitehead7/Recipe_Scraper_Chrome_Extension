@@ -23,6 +23,7 @@
         "*://www.chowhound.com/*",
         "*://www.cookinglight.com/*",
         "*://www.eatingwell.com/*",
+        "*://fallback-origin.eatingwell.com/*",
         "*://www.epicurious.com/*",
         "*://www.food.com/*",
         "*://food52.com/*",

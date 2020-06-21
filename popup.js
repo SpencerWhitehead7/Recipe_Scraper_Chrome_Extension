@@ -25,14 +25,14 @@ window.addEventListener(`DOMContentLoaded`, () => {
 
   // Populate textbox
   const populate = recipeData => {
-    if (recipeData && recipeData.recipe === `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`) {
-      textarea.innerHTML = recipeData.recipe
+    if (recipeData && recipeData.text === `Make sure your URL is at seriouseats.com/recipes, not just seriouseats.com`) {
+      textarea.innerHTML = recipeData.text
       button.disabled = true
-    } else if (recipeData && (!recipeData.title || !recipeData.recipe)) {
+    } else if (recipeData && (!recipeData.title || !recipeData.text)) {
       textarea.innerHTML = `Error: failed to scrape\n\nMake sure you're on a specific recipe's page`
       button.disabled = true
     } else if (recipeData) {
-      textarea.innerHTML = recipeData.recipe
+      textarea.innerHTML = recipeData.text
       input.value = `${recipeData.sourceSite.slice(0, -4)} ${recipeData.title}`
       button.addEventListener(`click`, download)
     } else {
