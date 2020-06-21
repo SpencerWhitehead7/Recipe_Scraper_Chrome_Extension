@@ -2,7 +2,7 @@
   "name": "Plate Scraper",
   "short_name": "PS",
   "manifest_version": 2,
-  "version": "0.9",
+  "version": "0.10",
   "description": "Scrapes title, ingredients, and instructions from recipe sites as editable, minimally formatted, downloadable plaintext.",
   "icons": {
     "128": "icon128.png",
